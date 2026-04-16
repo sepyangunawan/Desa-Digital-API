@@ -20,4 +20,19 @@ class HeadOfFamily extends Model
         'occupation',
         'marital_status'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+     public function familyMembers()
+    {
+        return $this->hasMany(FamilyMember::class);
+    }
+
+    public function socialAssistanceRecipients()
+    {
+        return $this->hasMany(SocialAssistanceRecipient::class);
+    }
 }
