@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(FamilyMember::class);
     }
+
+    public function developmentApplicants()
+    {
+        return $this->hasMany(DevelopmentApplicant::class);
+    }
 }

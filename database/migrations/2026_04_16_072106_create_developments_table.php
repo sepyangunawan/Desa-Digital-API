@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('developments', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('thumbnail');
             $table->string('name');
             $table->longText('description');
-            $table->decimal('price', 10, 2);
-            $table->date('date');
-            $table->time('time');
-            $table->boolean('is_active')->default(true);
+            $table->string('person_in_charge');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->decimal('amount', 10, 2);
+            $table->enum('status', ['on-going', 'completed']);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('developments');
     }
 };
