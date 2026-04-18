@@ -56,3 +56,98 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Desa Digital API 🏘️
+
+API backend untuk sistem informasi desa digital, dibangun menggunakan **Laravel 13** dan **PHP 8.4**. Proyek ini menerapkan **Repository Pattern** untuk arsitektur yang bersih dan terukur, serta mendukung Docker Sail untuk lingkungan pengembangan yang terisolasi.
+
+## 🚀 Fitur Utama
+
+- **Repository Pattern**: Pemisahan logika data dan bisnis.
+- **UUID**: Identifikasi unik untuk keamanan data.
+- **Soft Deletes**: Pengamanan penghapusan data secara logis.
+- **Custom Scopes**: Logika pencarian yang efisien pada model.
+- **Docker Ready**: Dukungan penuh menggunakan Laravel Sail.
+
+---
+
+## 🛠️ Persiapan Awal
+
+1. **Clone Repository**
+
+    ```bash
+    git clone
+    cd desa-digital-api
+
+    ```
+
+2. **Salin Environment**
+   cp .env.example .env
+
+---
+
+## 🐳 Opsi 1: Menjalankan dengan Docker Sail (Direkomendasikan)
+
+    Gunakan metode ini jika Anda memiliki Docker Desktop terinstal.
+
+1. **Instal Dependency (Jika PHP belum terinstal di host)**
+
+    ```Bash
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        laravelsail/php84-composer:latest \
+        composer install --ignore-platform-reqs
+
+    ```
+
+2. **Jalankan Container**
+
+    ```Bash
+    ./vendor/bin/sail up -d
+
+    ```
+
+3. **Inisialisasi Aplikasi**
+    ```Bash
+    ./vendor/bin/sail artisan key:generate
+    ./vendor/bin/sail artisan install:api
+    ./vendor/bin/sail artisan migrate --seed
+    ```
+
+---
+
+## 💻 Opsi 2: Menjalankan Secara Konvensional
+
+    Gunakan metode ini jika menggunakan XAMPP, Laragon, atau PHP native.
+
+1. **Instal Dependency**
+
+    ```Bash
+    composer install
+
+    ```
+
+2. **Konfigurasi Database**
+   Buka file .env, buat database manual bernama desa_digital_api, lalu sesuaikan:
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=desa_digital_api
+   DB_USERNAME=root
+   DB_PASSWORD=
+
+3. **Inisialisasi Aplikasi**
+
+    ```Bash
+    php artisan key:generate
+    php artisan install:api
+    php artisan migrate --seed
+
+    ```
+
+4. **Jalankan Server**
+    ```Bash
+    php artisan serve
+    ```
