@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Resources\PaginateResource;
 use Illuminate\Http\Request;
 use App\Interface\UserRepositoryInterface;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -20,11 +22,32 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        Try{
+        try{
             $users = $this->userRepository->getAll(
                 $request->search,
-                $request->limit, true
+                $request->limit,
+                true
             );
+            return ResponseHelper::jsonResponse(true, 'Data Retrieved Successfully', UserResource::collection($users), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500 );
+        }
+    }
+
+    public function getAllPaginated(Request $request)
+    {
+        $request = $request->validate([
+            'search' => 'nullable|string',
+            'row_per_page' => 'required|integer'
+        ]);
+
+        try{
+            $users = $this->userRepository->getAllPaginated(
+                $request['search'] ?? null,
+                $request['row_per_page']
+            );
+
+            return ResponseHelper::jsonResponse(true, 'Data Retrieved Successfully', PaginateResource::make($users, UserResource::class), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500 );
         }

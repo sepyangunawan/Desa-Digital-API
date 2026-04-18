@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -57,8 +56,8 @@ class User extends Authenticatable
 
     public function scopeSearch($query, $search)
     {
-       return $query->where('name', 'like', "%$search%")
-            ->orWhere('email', 'like', "%$search%");
+       return $query->where('name', 'like', '%'. $search .'%')
+            ->orWhere('email', 'like', '%'. $search .'%');
     }
 
     public function headOfFamily()
