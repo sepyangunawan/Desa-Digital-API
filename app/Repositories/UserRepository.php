@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Interface\UserRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Exception;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -40,5 +42,25 @@ class UserRepository implements UserRepositoryInterface
             false
         );
         return $query->paginate($rowPerPage ?? 10);
+    }
+
+    public function create(
+        array $data
+    ) {
+        DB::beginTransaction();
+        try {
+            $user = new User;
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->password = bcrypt($data['password']);
+            $user->save();
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            throw new Exception($e->getMessage());
+        }
     }
 }

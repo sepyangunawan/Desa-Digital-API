@@ -7,6 +7,7 @@ use App\Http\Resources\PaginateResource;
 use Illuminate\Http\Request;
 use App\Interface\UserRepositoryInterface;
 use App\Http\Resources\UserResource;
+use App\Http\Requests\UserStoreRequest;
 
 class UserController extends Controller
 {
@@ -56,9 +57,16 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //
+        $request = $request->validated();
+
+        try{
+            $user = $this->userRepository->create($request);
+            return ResponseHelper::jsonResponse(true, 'Data Created Successfully', new UserResource($user), 201);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500 );
+        }
     }
 
     /**
