@@ -16,8 +16,29 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'Nama',
+            'email' => 'Email',
+            'password' => 'Kata Sandi',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => ':attribute wajib diisi.',
+            'string' => ':attribute harus berupa teks.',
+            'max' => ':attribute tidak boleh lebih dari :max karakter.',
+            'min' => ':attribute harus memiliki minimal :min karakter.',
+            'unique' => ':attribute harus berupa email.',
+            'email' => ':attribute harus berupa alamat email yang valid.',
         ];
     }
 }
