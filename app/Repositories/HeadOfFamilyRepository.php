@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interface\HeadOfFamilyRepositoryInterface;
+use App\Models\HeadOfFamily;
 
 class HeadOfFamilyRepository implements HeadOfFamilyRepositoryInterface
 {
@@ -11,12 +12,14 @@ class HeadOfFamilyRepository implements HeadOfFamilyRepositoryInterface
         ?int $limit,
         ?bool $execute
     ) {
-        $query = User::where(function ($query) use ($search) {
+        $query = HeadOfFamily::with('user')->where(function ($query) use ($search) {
             //jika ada parameter search dia akan melakukan search, yang telah di definisikan pada model user
             if ($search) {
                 $query->search($search);
             }
         });
+
+        $query->orderBy('created_at', 'desc');
 
         if ($limit) {
             // mengambil beberapa data sesuai dengan limit yang diberikan
